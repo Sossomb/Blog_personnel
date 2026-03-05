@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('friendships', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_complet');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
+            $table->enum('statut',['en_sattente', 'accepte','bloque'])->default('en_attente');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('friendships');
     }
 };

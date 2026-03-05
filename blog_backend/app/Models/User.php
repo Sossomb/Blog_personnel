@@ -18,8 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nom_complet',
+        'username',
         'password',
     ];
 
@@ -30,16 +30,23 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
+    //Un utilisateur a plusieurs articles
+    public function articles(){
+        return $this->hasMany(Article::class);
+    }
+    //Un utilisateur a plusieurs commentaires
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    //Demandes d'amis envoyes
+    public function sentFriendships(){
+        return $this->hasMany(Friendship::class,'sender_id');
+    }
+
+    //Demandes d'amis recus
+    public function receivedFriendships(){
+        return $this->hasMany(Friendship::class,'receiver_id');
+    }
 }
