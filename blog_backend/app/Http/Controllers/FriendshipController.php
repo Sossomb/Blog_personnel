@@ -26,7 +26,7 @@ class FriendshipController extends Controller
 
         //Verifier que l'utilisateur existe
         $receiver = User::find($receiver_id);
-        if(! $receiver_id){
+        if(! $receiver){
             return response()->json([
                 'message' => 'Utilisateur non trouvé'
             ],404);
@@ -97,7 +97,16 @@ class FriendshipController extends Controller
             ->where('statut','accepte')
             ->with(['sender','receiver'])
             ->get();
-        return response()->json($amis);
+        $friends = $amis->map(function ($f) {
+            $me = auth()->id();
+            $other = ($f->sender_id == $me) ? $f->receiver : $f->sender;
+            return [
+                'id' => $f->id,
+                'username' => optional($other)->username,
+            ];
+        })->values();
+
+        return response()->json($friends);
         }
 
         //Supprimer un ami
@@ -117,7 +126,7 @@ class FriendshipController extends Controller
         $friendship->delete();
 
         return response()->json([
-            'message' => 'Amisupprime avec succes'
+            'message' => 'Ami supprimé avec succes'
         ]);
 
         }
@@ -145,10 +154,26 @@ class FriendshipController extends Controller
         //Voir les demandes recues en attente
         public function pendingRequests(){
 
-        $demandes = Friendship::where('receiver_id', auth()->id())
-                             ->where('statut', 'en_attente')
-                             ->with('sender')
-                             ->get();
-         return response()->json($demandes);
+        $demandes = Friendship::where('statut', 'en_attente')
+            ->where(function ($q) {
+                $q->where('receiver_id', auth()->id())
+                  ->orWhere('sender_id', auth()->id());
+            })
+            ->with(['sender', 'receiver'])
+            ->get();
+
+        $pending = $demandes->map(function ($f) {
+            $me = auth()->id();
+            $type = ($f->receiver_id == $me) ? 'recue' : 'envoyee';
+            $other = ($type === 'recue') ? $f->sender : $f->receiver;
+
+            return [
+                'id' => $f->id,
+                'type' => $type,
+                'username' => optional($other)->username,
+            ];
+        })->values();
+
+        return response()->json($pending);
          }
 }

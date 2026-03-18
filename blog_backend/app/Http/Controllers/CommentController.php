@@ -59,9 +59,10 @@ class CommentController extends Controller
     }
 
     //Supprimer un commentaire
-    public function destroy($id)
+    public function destroy($article_id, $id)
     {
         $comment = Comment::where('id', $id)
+                         ->where('article_id', $article_id)
                          ->where('user_id', auth()->id())
                          ->first();
 

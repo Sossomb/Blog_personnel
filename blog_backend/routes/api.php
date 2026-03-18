@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/logout',[AuthController::class,'logout']);
 
     //Dashboard
-    Route::get('/dashboard',[AuthController::class,'index']);
+    Route::get('/dashboard',[DashboardController::class,'index']);
 
     //Articles
     Route::get('/articles',[ArticleController::class,'index']);
@@ -44,14 +44,14 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/friends/search',[FriendshipController::class,'search']);
     Route::get('/friends/pending',[FriendshipController::class,'pendingRequests']);
     Route::post('/friends/send/{receiver_id}',[FriendshipController::class,'sendRequest']);
-    Route::put('/friends/accept/{firendship_id}',[FriendshipController::class,'acceptRequest']);
-    Route::put('/friends/reject/{firendship_id}',[FriendshipController::class,'rejectRequest']);
-    Route::put('/friends/block/{firendship_id}',[FriendshipController::class,'block']);
-    Route::delete('/friends/{firendship_id}',[FriendshipController::class,'destroy']);
+    Route::put('/friends/accept/{friendship_id}',[FriendshipController::class,'acceptRequest']);
+    Route::put('/friends/reject/{friendship_id}',[FriendshipController::class,'rejectRequest']);
+    Route::put('/friends/block/{friendship_id}',[FriendshipController::class,'block']);
+    Route::delete('/friends/{friendship_id}',[FriendshipController::class,'destroy']);
 
     //Commentaires
     Route::get('/articles/{article_id}/comments',[CommentController::class,'index']);
     Route::post('/articles/{article_id}/comments',[CommentController::class,'store']);
-    Route::delete('/articles/{article_id}/comments',[CommentController::class,'destroy']);
+    Route::delete('/articles/{article_id}/comments/{id}',[CommentController::class,'destroy']);
 
 });

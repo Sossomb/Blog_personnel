@@ -33,8 +33,19 @@ class DashboardController extends Controller
                           })
                           ->with('user')
                           ->orderBy('created_at', 'desc')
-                          ->get();
+                          ->get()
+                          ->map(function ($article) {
+                              return [
+                                  'id' => $article->id,
+                                  'titre' => $article->titre,
+                                  'contenu' => $article->contenu,
+                                  'visibilite' => $article->visibilite,
+                                  'auteur' => optional($article->user)->username,
+                              ];
+                          });
 
-        return response()->json($articles);
+        return response()->json([
+            'articles' => $articles,
+        ]);
     }
 }

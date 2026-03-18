@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
-            $table->enum('statut',['en_sattente', 'accepte','bloque'])->default('en_attente');
+            $table->enum('statut',['en_sattente', 'accepte','bloque'])->default('en_sattente');
             $table->timestamps();
         });
     }

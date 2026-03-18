@@ -50,7 +50,7 @@ class AuthController extends Controller
                 'message' => 'Connexion reussie',
                 'user' => $user,
                 'token' => $token
-        ], 201);
+        ], 200);
     }
 
     //Deconnexion

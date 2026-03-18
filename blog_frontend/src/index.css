@@ -1,68 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: linear-gradient(135deg, #0F0A1E 0%, #1E0B3B 40%, #2D1057 70%, #0F0A1E 100%);
+  background-attachment: fixed;
+  animation: bgShift 12s ease infinite alternate;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+@keyframes bgShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+/* Light mode body override */
+body.light-mode {
+  background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 40%, #DDD6FE 70%, #F5F3FF 100%);
+}
+
+a {
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  text-decoration: none;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Scrollbar personnalisée */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(124, 58, 237, 0.05); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7C3AED, #EC4899);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: #6D28D9; }
+
+/* Animations globales */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.fade-in-up  { animation: fadeInUp 0.5s ease both; }
+.fade-in     { animation: fadeIn 0.4s ease both; }
+.slide-in    { animation: slideInLeft 0.4s ease both; }
+
+/* Délais pour listes */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+
+/* Glassmorphism helper */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(167, 139, 250, 0.15);
+  border-radius: 16px;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
