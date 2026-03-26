@@ -41,6 +41,7 @@ class DashboardController extends Controller
                                   'contenu' => $article->contenu,
                                   'visibilite' => $article->visibilite,
                                   'auteur' => optional($article->user)->username,
+                                  'commentaire_actives' => $article->commentaire_actives,
                               ];
                           });
 

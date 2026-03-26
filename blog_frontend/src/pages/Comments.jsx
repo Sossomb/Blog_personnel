@@ -13,12 +13,18 @@ export default function Comments() {
   const fetchArticles = async () => {
     setError('');
     try {
-      const res = await fetch(`${API_BASE_URL}/api/articles`, {
+      // On utilise le dashboard pour avoir aussi les articles des amis
+      const res = await fetch(`${API_BASE_URL}/api/dashboard`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (res.ok) setArticles(Array.isArray(data) ? data : []);
-      else setError(data.message || 'Erreur lors du chargement des articles');
+      if (res.ok) {
+        // On garde uniquement les articles où les commentaires sont activés
+        const all = Array.isArray(data.articles) ? data.articles : [];
+        setArticles(all.filter((a) => a.commentaire_actives));
+      } else {
+        setError(data.message || 'Erreur lors du chargement des articles');
+      }
     } catch {
       setError('Erreur réseau');
     }

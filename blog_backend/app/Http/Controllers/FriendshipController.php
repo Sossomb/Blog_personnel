@@ -32,10 +32,14 @@ class FriendshipController extends Controller
             ],404);
         }
 
-        //Verifier qu'une demande n'exite pas deja
-        $existingRequest = Friendship::where('sender_id', auth()->id())
-                                    ->where('receiver_id',$receiver_id)
-                                    ->first();
+        //Verifier qu'une demande n'existe pas deja (dans les deux sens)
+        $existingRequest = Friendship::where(function ($q) use ($receiver_id) {
+                                    $q->where('sender_id', auth()->id())
+                                      ->where('receiver_id', $receiver_id);
+                                })->orWhere(function ($q) use ($receiver_id) {
+                                    $q->where('sender_id', $receiver_id)
+                                      ->where('receiver_id', auth()->id());
+                                })->first();
         if($existingRequest){
             return response()->json([
                 'message' => 'Une demande est deja en cours'

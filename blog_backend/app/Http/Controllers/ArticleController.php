@@ -66,10 +66,10 @@ class ArticleController extends Controller
                 $request->validate([
                     'titre' => 'string',
                     'contenu' => 'string',
-                    'visibilte' => 'in:public,prive',
+                    'visibilite' => 'in:public,prive',
                     'commentaire_actives' => 'boolean',
                 ]);
-                $article->update($request->all());
+                $article->update($request->only(['titre', 'contenu', 'visibilite', 'commentaire_actives']));
 
             return response()->json([
                 'message' =>'Article modifie avec succes',
